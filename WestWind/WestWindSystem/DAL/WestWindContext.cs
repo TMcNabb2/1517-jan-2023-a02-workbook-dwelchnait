@@ -11,7 +11,12 @@ using WestWindSystem.Entities;
 
 namespace WestWindSystem.DAL
 {
-    public partial class WestWindContext : DbContext
+    //by changing the access level of this class to internal
+    //   one restricts access to anything within this class
+    //   to call from within the class library project.
+    //this adds a level of security
+
+    internal partial class WestWindContext : DbContext
     {
         public WestWindContext()
         {
