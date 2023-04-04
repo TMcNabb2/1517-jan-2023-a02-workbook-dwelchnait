@@ -1,0 +1,21 @@
+﻿@page "{shipmentid}"
+@*
+    The routing parameters are placed the the @page line of the receiving web page
+    the @page line MUST be the 1st physical line of your web page
+    syntax "{localpagenamegiventoparameter}[/{value2}/....]"
+*@
+@model WebApp.Pages.Samples.ReceivingPageRoutingModel
+@{
+    ViewData["Title"] = "Receiving routing passed data";
+}
+<h1>Receiving Page of passed data: Routing</h1>
+
+@if (Model.shipmentid == null)
+{
+    <p>No value was passed &gt;@Model.shipmentid&lt;</p>
+}
+else
+{
+
+    <p>The value you passed was @Model.shipmentid</p>
+}

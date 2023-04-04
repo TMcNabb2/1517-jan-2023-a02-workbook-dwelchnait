@@ -1,0 +1,177 @@
+﻿@page
+@model WebApp.Pages.Samples.ShipmentForSupplierModel
+@{
+    ViewData["Title"] = "Get Supplier Shipments";
+}
+<style>
+    .mediumbox {
+        width: 150px;
+    }
+
+    .largebox {
+        width: 300px;
+    }
+
+    /*table scroll css rules*/
+
+    table, td {
+        border: 1px solid black;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    .cellalign {
+        text-align: center;
+    }
+
+
+    table {
+        display: flex;
+        flex-flow: column;
+        width: 50%;
+        height: 400px;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    thead {
+        flex: 0 0 auto;
+       
+    }
+
+    tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    tr {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+    }
+
+</style>
+<h1>Supplier Shipments</h1>
+<p> This page will demonstrate techniques to pass data from one page to another. There will be various techniques
+    explored. This page uses ModelState error handling. This page uses drilldown filter searching.
+    Using a string input  a select control will be loaded. Using the dynamically load select control, a
+    list of shipments will be displayed. From this table of shipments various data passing techniques
+    will be demonstrated.
+</p>
+@if (ModelState.ErrorCount > 0)
+{
+        <div asp-validation-summary="All" class="alert alert-danger">
+
+                <p>Please review concerns and correct:</p>
+
+        </div>
+}
+
+<form method="post">
+    <div class="setflex">
+
+        Enter a partial Shipper Name (or part of):&nbsp;&nbsp;
+        <input type="text" asp-for="searcharg" class="mediumbox"
+               placeholder="shipper name" />&nbsp;&nbsp;
+        <button type="submit" asp-page-handler="FetchShippers">Shippers ?</button>
+    </div>
+    <br/>
+    <div class="setflex">
+        Select a Shipper:&nbsp;&nbsp;
+        <select asp-for="shipperid" class="largebox">
+            <option value="0">select ...</option>
+            @foreach(var item in Model.ShipperList)
+            {
+                <option value="@item.ShipperID">
+                    @item.CompanyName
+                </option>
+            }
+        </select>
+        &nbsp;&nbsp;
+        <button type="submit" asp-page-handler="FetchShipments">Shipments ?</button>&nbsp;&nbsp;
+
+    </div>
+    <br/><br/>
+    @if (Model.ShipmentInfo != null)
+    {
+        @*This IF checks to see if any records were found when the query was executed*@
+        if (Model.ShipmentInfo.Count == 0)
+        {
+                    <p style="color:blueviolet; font-weight:bold; font-size:large;">
+                        There are no shipments for selected shipper.
+                    </p>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    @*used for column titles*@
+                    <tr>
+                        <th>Shipment</th>
+                        <th>OrderID</th>
+                        <th>Shipped Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShipmentInfo)
+                    {
+                        <tr>
+                            <td>
+                                @*
+                                    this example will send the ShipmetID to another page
+
+                                    use the anchor tag to accomplish this task
+                                    the href page value MUST be reference from the Page folder
+                                    the value to be passed is atteched to the end of the
+                                       page reference
+
+                                    Anchor 1:
+
+                                    the value will be passed to the receiving page as a
+                                       routing parameter
+                                    you can send multiple values to the new page
+                                    the receiving page MUST have the same number of
+                                       routing parameters as those past AND the order
+                                       of the parameters MUST match between the href reference
+                                       and the receiving page list of routing parameter
+                                    Page reference syntax:
+                                          /pathname/routingvalue[/values/....]
+
+                                    Anchor 2
+                                    the value will be passed to the receiving page using
+                                         a string on a Get Request
+                                    you can send multile values to the new page
+                                    the receiving page does not need to have the same
+                                       number of passed value parameters
+                                    Page reference syntax:
+                                         /pathname?arg[&arg&arg&...]
+
+                                         where arg is a pattern of   label=value
+                                         typically the literal label is kept extremely short
+                                         why? the url has a top end length
+                                *@
+                                <a href="/Samples/ReceivingPageRouting/@item.ShipmentID">
+                                    transfer by routing
+                                </a>
+                                <a href="/Samples/ReceivingPageGetRequest?sid=@item.ShipmentID">
+                                    transfer by Get Request
+                                </a>
+                                @item.ShipmentID
+                            </td>
+                            <td>@item.OrderID</td>
+                            <td>@item.ShippedDate.ToString("MMM dd, yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+    }
+    <button type="submit" asp-page-handler="Clear">Clear</button>&nbsp;&nbsp;
+
+</form>
+

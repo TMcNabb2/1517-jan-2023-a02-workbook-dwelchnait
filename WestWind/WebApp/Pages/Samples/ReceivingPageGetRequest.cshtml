@@ -1,0 +1,16 @@
+﻿@page
+@model WebApp.Pages.Samples.ReceivingPageGetRequestModel
+@{
+    ViewData["Title"] = "Receiving Get Request passed data";
+}
+<h1>Receiving Page of passed data: Get Request</h1>
+
+@if (Model.shipmentid == null)
+{
+        <p>No value was passed &gt;@Model.shipmentid&lt;</p>
+}
+else
+{
+
+        <p>The value you passed was @Model.shipmentid</p>
+}
