@@ -23,14 +23,15 @@ namespace WestWindSystem.Entities
 
         [Key]
         public int ProductID { get; set; }
-        [Required]
-        [StringLength(40)]
+        [Required(ErrorMessage ="Product name is required.")]
+        [StringLength(40,ErrorMessage ="Product name is limited to 40 characters")]
         public string ProductName { get; set; }
         public int SupplierID { get; set; }
         public int CategoryID { get; set; }
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "Quanity per unit is required.")]
+        [StringLength(20, ErrorMessage = "Quanity per unit is limited to 20 characters"))]
         public string QuantityPerUnit { get; set; }
+        [Range(0,10000,ErrorMessage ="Quantity ordered must be greater 0 and less than 10000")]
         public short? MinimumOrderQuantity { get; set; }
         [Column(TypeName = "money")]
         public decimal UnitPrice { get; set; }
