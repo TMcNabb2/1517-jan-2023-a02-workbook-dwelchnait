@@ -83,12 +83,12 @@ namespace WebApp.Pages.Samples
 
         public IActionResult OnPostNew()
         {
-            Feedback = "this button will send you to another page";
+         
             //temporarly put in a call to reload the lists
             //this will be removed when the proper code for this
             //  method is inserted
-            PopulateLists();
-            return Page();
+          
+            return RedirectToPage("./CRUDProduct");
         }
 
     }

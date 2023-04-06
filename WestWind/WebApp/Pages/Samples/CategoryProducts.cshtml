@@ -54,7 +54,18 @@
                     @foreach(var item in Model.ProductList)
                     {
                         <tr>
-                            <td>@item.ProductName</td>
+                            <td>
+                                @* The ProductID, though not displayed is available
+                                    for use because it is on the ProductList instance
+                                    The ProductList instance uses the Product entity
+
+                                    For the link display on the form, we are using
+                                    the Product Name
+                                *@
+                                <a href="/Samples/CRUDProduct/@item.ProductID">
+                                    @item.ProductName
+                                </a>
+                                </td>
                             <td>
                                 @* since this list will be display ONLY, I do not
                                     wish the user to change the position of the

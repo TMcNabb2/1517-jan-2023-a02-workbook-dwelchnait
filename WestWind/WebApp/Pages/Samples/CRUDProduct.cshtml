@@ -1,0 +1,27 @@
+﻿@page "{productid?}"
+@model WebApp.Pages.Samples.CRUDProductModel
+@{
+    ViewData["Title"] = "Product CRUD";
+}
+<h1>Product CRUD</h1>
+
+@* include the validation libraries you wish to use on this page
+    this is done by naming the _ValidationScriptsPartial file
+*@
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
+
+@if(Model.HasFeedback)
+{
+    <p>@Model.Feedback</p>
+}
+
+<form method="post">
+    @*
+        create a control for each field on the product record
+        maybe input or select
+        need to bind to a property on the code behind
+        add buttons for processing
+    *@
+</form>

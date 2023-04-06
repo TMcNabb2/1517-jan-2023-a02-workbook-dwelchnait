@@ -29,7 +29,7 @@ namespace WestWindSystem.Entities
         public int SupplierID { get; set; }
         public int CategoryID { get; set; }
         [Required(ErrorMessage = "Quanity per unit is required.")]
-        [StringLength(20, ErrorMessage = "Quanity per unit is limited to 20 characters"))]
+        [StringLength(20, ErrorMessage = "Quanity per unit is limited to 20 characters")]
         public string QuantityPerUnit { get; set; }
         [Range(0,10000,ErrorMessage ="Quantity ordered must be greater 0 and less than 10000")]
         public short? MinimumOrderQuantity { get; set; }
