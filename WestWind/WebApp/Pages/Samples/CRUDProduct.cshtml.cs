@@ -56,5 +56,11 @@ namespace WebApp.Pages.Samples
             categoryList = _categoryServices.Category_List();
             supplierList = _supplierServices.Supplier_List();
         }
+
+        public IActionResult OnPost()
+        {
+            PopulateSupportLists();
+            return Page();
+        }
     }
 }
