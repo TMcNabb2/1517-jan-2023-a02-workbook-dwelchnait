@@ -17,6 +17,15 @@
     <p>@Model.Feedback</p>
 }
 
+@if (ModelState.ErrorCount > 0)
+{
+        <div asp-validation-summary="All" class="alert alert-danger">
+
+                <p>Please review concerns and correct:</p>
+
+        </div>
+}
+
 <form method="post">
     @*
         create a control for each field on the product record
@@ -24,4 +33,126 @@
         need to bind to a property on the code behind
         add buttons for processing
     *@
+    <label>
+        ID:
+        @if(Model.productInfo == null)
+        {
+            //the intent is a new product is being added to the database
+            //there is no pkey value
+            //the product entity in sql has an identity pkey
+            <input type="text" asp-for="productInfo.ProductID" readonly data-val="false"
+               value="0">
+        }
+        else
+        {
+            //the intent is to update/delete an existing product record on the database
+            //therfore a pkey value will exist on the product info record
+            //One does NOT want to mess with the pkey of a record
+            //this piece of data should only be viewed and not alterable
+            <input type="text" asp-for="productInfo.ProductID" readonly data-val="false">
+        }
+        @*to be able to display an error associated with a field directly adjacence to the input
+            field, we can use a span tag with the asp-validation-for helper
+        *@ 
+        <span asp-validation-for="productInfo.ProductID"></span>
+    </label>
+    <label>
+        Product Name:
+        <input type="text" asp-for="productInfo.ProductName" placeholder="product name" />
+        <span asp-validation-for="productInfo.ProductName"></span>
+    </label>
+    <label>
+        Category: select a category
+        <select asp-for="productInfo.CategoryID">
+            <option value="0">select ...</option>
+            @foreach(var cat in Model.categoryList)
+            {
+                <option value="@cat.CategoryID"
+                     selected=@(Model.productInfo != null
+                              && cat.CategoryID == Model.productInfo.CategoryID)>
+                    @cat.CategoryName
+                </option>
+            }
+        </select>
+        <span asp-validation-for="productInfo.CategoryID"></span>
+    </label>
+    <label>
+        Supplier: select a supplier
+        <select asp-for="productInfo.SupplierID">
+            <option value="0">select ...</option>
+            @foreach (var sup in Model.supplierList)
+            {
+                <option value="@sup.SupplierID"
+                    selected=@(Model.productInfo != null
+                    && sup.SupplierID == Model.productInfo.SupplierID)>
+                    @sup.CompanyName
+                </option>
+            }
+        </select>
+        <span asp-validation-for="productInfo.SupplierID"></span>
+    </label>
+    <label>
+        Quantity per Unit:
+        <input type="text" asp-for="productInfo.QuantityPerUnit" placeholder="unit size" />
+        <span asp-validation-for="productInfo.QuantityPerUnit"></span>
+    </label>
+    <label>
+        Min Order Qty:
+        <input type="number" asp-for="productInfo.MinimumOrderQuantity" placeholder="1"
+            step="1" min="1"/>
+        <span asp-validation-for="productInfo.MinimumOrderQuantity"></span>
+    </label>
+    <label>
+        Unit Price:
+        <input type="number" asp-for="productInfo.UnitPrice" placeholder="0.00"
+               step="0.01" min="0.00" />
+        <span asp-validation-for="productInfo.UnitPrice"></span>
+    </label>
+    <label>
+        Units On Order:
+        <input type="number" asp-for="productInfo.UnitsOnOrder" placeholder="0"
+               step="1" min="0" />
+        <span asp-validation-for="productInfo.UnitsOnOrder"></span>
+    </label>
+    <label>
+        @*
+            a checkbox by default will return either null (not checked) OR on (checked)
+            since our property in Product is a bool, we will want to have the 
+                 checkbox treat as a bool
+            C# default for a bool is false
+            if the checkbox is NOT checked, no data is passed to the PageModel
+            THEREFORE we need to setup a way to get the value true (checked) to the
+                PageModel property
+            TO DO THIS add the attribute value=true to your checkbox
+        *@
+        Discontinue:
+        <input type="checkbox" asp-for="productInfo.Discontinued" value="true" />
+        &nbsp;&nbsp; (discontinued if checked)
+        <span asp-validation-for="productInfo.Discontinued"></span>
+    </label>
+    <br/><br/>
+    @* test the routing parameter to see if it is present
+        if not: this is a new product
+        if there: this is an existing product
+    *@
+    @if(Model.productid.HasValue)
+    {
+        //an existing product
+        <button type="submit" asp-page-handler="New" disabled>Save New</button>
+        <button type="submit" asp-page-handler="Update" >Update</button>
+        <button type="submit" asp-page-handler="Delete" formnovalidate
+           onclick="return confirm('Are you sure you wish to discontinue the product?')">Discontinue</button>
+    }
+    else
+    {
+        //a new product
+        <button type="submit" asp-page-handler="New">Save New</button>
+        <button type="submit" asp-page-handler="Update" disabled>Update</button>
+        <button type="submit" asp-page-handler="Delete" disabled formnovalidate
+            onclick="return confirm('Are you sure you wish to discontinue the product?')">
+            Discontinue
+        </button>
+    }
+    <button type="submit" asp-page-handler="Clear" formnovalidate>Clear</button>
+    <button type="submit" asp-page-handler="Search" formnovalidate>Return to Search</button>
 </form>

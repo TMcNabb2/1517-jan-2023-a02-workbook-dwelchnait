@@ -32,17 +32,29 @@ namespace WebApp.Pages.Samples
         public string Feedback { get; set; }
         public bool HasFeedback { get { return !string.IsNullOrWhiteSpace(Feedback); } }
 
+        [BindProperty]
         public Product productInfo { get; set; }
+
+        public List<Category> categoryList { get; set; }
+        public List<Supplier> supplierList { get; set; }    
+
         public void OnGet()
         {
 
-            if (productid.HasValue) //field is a nullale int
+            if (productid.HasValue) //field is a nullable int
                 if (productid > 0)  //primary keys start at 1 and increase
                 {
                     //.Value is needed BECAUSE productid, though an int, is a nullable int
                     productInfo = _productServices.Product_GetById(productid.Value);
                     Feedback = $"ID {productInfo.ProductID} Name {productInfo.ProductName} Price {productInfo.UnitPrice}";
                 }
+            PopulateSupportLists();
+        }
+
+        public void PopulateSupportLists()
+        {
+            categoryList = _categoryServices.Category_List();
+            supplierList = _supplierServices.Supplier_List();
         }
     }
 }
