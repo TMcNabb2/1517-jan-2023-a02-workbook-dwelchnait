@@ -1,0 +1,81 @@
+_Layout link to holiday.css
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/holiday.css@0.11.0" />
+( remove bootstrap link/classes from supplied code)
+
+
+sample menu
+  <nav>
+            <ul >
+                <li>
+                    <a asp-area="" asp-page="/Index">
+                    <img src="~/img/WestWindLogo.png" alt="WestWind logo" 
+                            title="Go to home ..." />    
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-page="/Index">Home</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-page="/Samples/RegionQueryOne">Regions</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-page="/Samples/CategoryProducts">Category Products</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-page="/Samples/ShipmentForSupplier">Shipments</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-page="/Privacy">Privacy</a>
+                </li>
+            </ul>
+
+        </nav>
+
+this embedded styling can be placed on any .cshtml page.
+bootstrap also has table scrolling abilities but I do not know the class
+
+<style>
+
+    /*table scroll css rules*/
+
+    table, td {
+        border: 1px solid black;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    .cellalign {
+        text-align: center;
+    }
+
+
+    table {
+        display: flex;
+        flex-flow: column;
+        width: 50%;
+        height: 400px; //you can set the table height 
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    thead {
+        flex: 0 0 auto;
+       
+    }
+
+    tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    tr {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+    }
+
+</style>
