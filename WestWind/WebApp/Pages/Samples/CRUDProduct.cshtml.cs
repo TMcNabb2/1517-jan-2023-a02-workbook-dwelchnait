@@ -62,5 +62,49 @@ namespace WebApp.Pages.Samples
             PopulateSupportLists();
             return Page();
         }
+        public IActionResult OnPostNew()
+        {
+            //setup a test to see if the state of the web page is valid
+            //  BEFORE attempting any processing
+            //The form fields have be associated with individual properties
+            //   in the bound variable productInfo via the BindProperty attribute
+            //As the Request Post was sent to the web server, the transfer of
+            //  control form data was attempted to be placed in the receiving 
+            //  variables.
+            //this means any fully-implement properties that throw an exception
+            //  will set the ModelState to invalid
+            if (ModelState.IsValid)
+            {
+                //one will be interacting with multiple projects within this post event
+                //the class library project CANNOT display errors directly to your screen
+                //the class library project INSTEAD issues Exceptions
+                //THEREFORE your post event handler MUST use user-friendly error handling
+                //  techniques
+                try
+                {
+
+                }
+                catch(ArgumentNullException ex)
+                {
+
+                }
+                catch(ArgumentException ex)
+                {
+
+                }
+                catch(Exception ex)
+                {
+
+                }
+            }
+            else
+            {
+                //remember the internet and thus your web application is a stateless
+                //   system
+                //you must refresh your lists
+                PopulateSupportLists();
+            }
+            return Page();
+        }
     }
 }
