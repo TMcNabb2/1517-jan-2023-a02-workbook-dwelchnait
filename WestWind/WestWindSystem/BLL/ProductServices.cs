@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -125,6 +126,80 @@ namespace WestWindSystem.BLL
             //  will be placed in the database GENERATING you new identity pkey value
             return item.ProductID;
         }
+
+        public int Product_UpdateProduct(Product item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("Product data is missing");
+            }
+
+            bool exists = _context.Products.Any(x => x.ProductID == item.ProductID);
+
+            //instance not found has a null value for the results
+            if (!exists)
+            {
+                throw new Exception($"{item.ProductName} is no longer on the system.");
+            }
+
+            //Staging
+            EntityEntry<Product> updating = _context.Entry(item);
+            updating.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+           //Commit
+           //the returned value is the number of rows affected 
+           //value of rows affected is sent here from sql
+            return _context.SaveChanges();
+
+            
+        }
+
+        public int Product_DeleteProduct(Product item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("Product data is missing");
+            }
+
+
+            //the .Any method returns a true or false as a result of the condition
+            bool exists = _context.Products
+                               .Any(x => x.ProductID == item.ProductID);
+
+
+
+            //instance not 
+            if (!exists)
+            {
+                throw new Exception($"{item.ProductName} is no longer on the system.");
+            }
+
+            //Physical Delete
+            //will do a physical removal of a record from the database
+            //Staging
+            //EntityEntry<Product> deleting = _context.Entry(item);
+            //deleting.State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+
+            //Logical Delete
+            //for our Product we cannot do a physical delete
+            //for our Product the service method will set the field indicating
+            //  the logical delete to its appropriate value
+            //Your service method should not rely on the appropriate value
+            //  being submitted. Set the value within the service method
+
+            //Staging
+            item.Discontinued =true;
+            EntityEntry<Product> updating = _context.Entry(item);
+            updating.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+            //Commit
+            //the returned value is the number of rows affected 
+            //value of rows affected is sent here from sql
+            return _context.SaveChanges();
+
+
+        }
+
         #endregion
     }
 }
