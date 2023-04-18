@@ -173,6 +173,15 @@ namespace WestWindSystem.BLL
             {
                 throw new Exception($"{item.ProductName} is no longer on the system.");
             }
+            //there are two types of deleting: physical and logically
+            //whether you have a physical or logically delete is determind WHEN
+            //  the database was designed.
+
+            //physical delete
+            //you physical remove a record from the database
+            //REMEMBER: you CANNOT delete a parent record IF there are child records
+            //              (pkey => fkey)
+            //          if there are child records, sql will throw and error
 
             //Physical Delete
             //will do a physical removal of a record from the database
@@ -182,11 +191,16 @@ namespace WestWindSystem.BLL
 
             //Logical Delete
             //for our Product we cannot do a physical delete
+            //you logically flag a record on the database by setting a specific field
+            //we have a discontinued flag
+            //DO NOT rely on the user to set the flag
+            //DO IT FOR the user within your method
             //for our Product the service method will set the field indicating
             //  the logical delete to its appropriate value
             //Your service method should not rely on the appropriate value
             //  being submitted. Set the value within the service method
 
+            //for a logical delete your are ACTUALLY doing an update
             //Staging
             item.Discontinued =true;
             EntityEntry<Product> updating = _context.Entry(item);
